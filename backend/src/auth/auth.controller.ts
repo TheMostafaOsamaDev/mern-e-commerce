@@ -1,7 +1,15 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import * as bcrypt from 'bcryptjs';
 import { ADMIN_OTP } from 'src/config';
 
@@ -30,5 +38,24 @@ export class AuthController {
     } catch (error) {
       return false;
     }
+  }
+
+  @Delete('/sign-out')
+  async signOut(@Req() req: Request, @Res() res: Response) {
+    const authToken = req.cookies['auth'];
+
+    if (!authToken) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    await this.authService.signOut(authToken);
+
+    res.cookie('auth', '', {
+      httpOnly: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
+      expires: new Date(0),
+    });
+
+    res.send({ message: 'Success' });
   }
 }

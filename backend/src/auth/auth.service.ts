@@ -62,18 +62,41 @@ export class AuthService {
         secret: randomToken,
       });
 
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(clientToken, salt);
+
       await this.Session.create({
         userId: account.user.id,
         token: mainToken,
+        hashToken: hash,
         secret: randomToken,
       });
-
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(clientToken, salt);
 
       return hash;
     } else {
       throw new UnauthorizedException('Invalid email or password');
     }
+  }
+
+  async signOut(token: string) {
+    const session = await this.Session.findOne({
+      where: {
+        hashToken: token,
+      },
+    });
+
+    if (!session) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    const isMatch = bcrypt.compareSync(session.token, token);
+
+    if (!isMatch) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    await session.destroy();
+
+    return true;
   }
 }

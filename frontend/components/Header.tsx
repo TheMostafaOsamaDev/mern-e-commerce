@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { CircleAlert, LogIn, ShoppingBasket, UserPlus } from "lucide-react";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
-import UserDropdown from "./UserDropdown";
+import UserDropdown from "./auth/UserDropdown";
 
 export default async function Header() {
   let content;

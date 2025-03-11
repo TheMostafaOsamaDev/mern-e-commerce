@@ -41,6 +41,12 @@ export class BackendSession extends Model {
     type: DataType.TEXT,
     allowNull: false,
   })
+  hashToken: string;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
   token: string;
 
   // Foreign key to the User model

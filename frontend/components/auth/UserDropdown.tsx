@@ -2,13 +2,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { EllipsisVertical, User } from "lucide-react";
 import Link from "next/link";
+import SignOutButton from "./SignOutButton";
 export default function UserDropdown() {
   return (
     <DropdownMenu>
@@ -23,6 +22,8 @@ export default function UserDropdown() {
             <User /> Profile
           </Link>
         </DropdownMenuItem>
+
+        <SignOutButton />
       </DropdownMenuContent>
     </DropdownMenu>
   );

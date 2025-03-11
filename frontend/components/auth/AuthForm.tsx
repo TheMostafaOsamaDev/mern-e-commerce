@@ -155,7 +155,7 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
               const res = await signInBackend({
                 email: data.email,
                 password: data.password,
-                isSignUp: true,
+                isSignUp: false,
               });
               if (res) {
                 toast.success("Signed in successfully!");
