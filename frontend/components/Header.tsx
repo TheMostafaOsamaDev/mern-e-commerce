@@ -36,6 +36,8 @@ export default async function Header() {
         <>
           <UserDropdown />
 
+          {session.user.isAdmin && <Button></Button>}
+
           <Button asChild>
             <Link href={"/cart"}>
               <ShoppingBasket /> Cart
