@@ -17,6 +17,8 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
+  // TODO: Add better-auth integration here
+
   await app.listen(process.env.PORT ?? 8000);
 }
 bootstrap();

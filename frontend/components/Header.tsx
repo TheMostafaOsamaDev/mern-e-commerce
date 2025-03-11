@@ -36,7 +36,7 @@ export default async function Header() {
         <>
           <UserDropdown />
 
-          {session.user.isAdmin && <Button></Button>}
+          {/* TODO: Add dashboard */}
 
           <Button asChild>
             <Link href={"/cart"}>
