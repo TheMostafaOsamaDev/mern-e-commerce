@@ -2,9 +2,56 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import SearchInput from "./ui/search-input";
-import AuthDialog from "./auth/AuthDialog";
+import { Button } from "./ui/button";
+import { CircleAlert, LogIn, ShoppingBasket, UserPlus } from "lucide-react";
+import { auth } from "@/auth";
+import { headers } from "next/headers";
+import UserDropdown from "./UserDropdown";
 
-export default function Header() {
+export default async function Header() {
+  let content;
+
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      content = (
+        <>
+          <Button asChild>
+            <Link href={"/sign-up"}>
+              <UserPlus /> Sign up
+            </Link>
+          </Button>
+          <Button asChild variant={"outline"}>
+            <Link href={"/sign-in"}>
+              <LogIn /> Sign in
+            </Link>
+          </Button>
+        </>
+      );
+    } else {
+      content = (
+        <>
+          <UserDropdown />
+
+          <Button asChild>
+            <Link href={"/cart"}>
+              <ShoppingBasket /> Cart
+            </Link>
+          </Button>
+        </>
+      );
+    }
+  } catch (error) {
+    content = (
+      <Button variant={"secondary"} disabled>
+        <CircleAlert />
+      </Button>
+    );
+  }
+
   return (
     <header className="container py-2">
       <div className="flex items-center justify-between gap-4 border-b">
@@ -20,8 +67,7 @@ export default function Header() {
 
         <SearchInput />
 
-        <AuthDialog type="sign-up" />
-        <AuthDialog type="sign-in" />
+        {content}
       </div>
     </header>
   );

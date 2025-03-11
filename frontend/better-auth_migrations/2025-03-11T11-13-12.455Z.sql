@@ -1,4 +1,4 @@
-create table `user` (`id` varchar(36) not null primary key, `name` text not null, `email` varchar(255) not null unique, `emailVerified` boolean not null, `image` text, `createdAt` datetime not null, `updatedAt` datetime not null, `firstName` text not null, `lastName` text not null, `pass` text not null);
+create table `user` (`id` varchar(36) not null primary key, `name` text not null, `email` varchar(255) not null unique, `emailVerified` boolean not null, `image` text, `createdAt` datetime not null, `updatedAt` datetime not null, `firstName` text not null, `lastName` text not null, `pass` text not null, `isAdmin` boolean not null);
 
 create table `session` (`id` varchar(36) not null primary key, `expiresAt` datetime not null, `token` varchar(255) not null unique, `createdAt` datetime not null, `updatedAt` datetime not null, `ipAddress` text, `userAgent` text, `userId` varchar(36) not null references `user` (`id`));
 

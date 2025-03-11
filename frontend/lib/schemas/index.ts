@@ -6,6 +6,7 @@ export const signUpSchema = z.object({
   lastName: z.string().min(2).default(""),
   email: z.string().email().default(""),
   password: z.string().min(8).default(""),
+  isAdmin: z.boolean().default(false),
 });
 
 export const signUpDefaultValues = {
@@ -13,6 +14,7 @@ export const signUpDefaultValues = {
   lastName: "",
   email: "",
   password: "",
+  isAdmin: false,
 };
 
 // Sign in schema
@@ -21,6 +23,7 @@ export const signInSchema = z.object({
   lastName: z.string().min(2).default("").optional(),
   email: z.string().email().default(""),
   password: z.string().min(8).default(""),
+  isAdmin: z.boolean().default(false),
 });
 
 export const signInDefaultValues = {

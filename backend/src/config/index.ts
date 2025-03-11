@@ -19,3 +19,5 @@ export const DB_NAME = process.env.DB_NAME!;
 export const DB_TYPE = process.env.DB_TYPE!;
 
 export const JWT_SECRET = process.env.JWT_SECRET!;
+
+export const ADMIN_OTP = process.env.ADMIN_OTP!;

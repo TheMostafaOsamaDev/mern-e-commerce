@@ -12,6 +12,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    autoSignIn: true,
   },
   user: {
     additionalFields: {
@@ -27,10 +28,14 @@ export const auth = betterAuth({
         type: "string",
         required: true,
       },
+      isAdmin: {
+        type: "boolean",
+        required: true,
+        defaultValue: false,
+      },
     },
-  },
-  hooks: {},
-  advanced: {
-    useSecureCookies: true,
+    deleteUser: {
+      enabled: true,
+    },
   },
 });
