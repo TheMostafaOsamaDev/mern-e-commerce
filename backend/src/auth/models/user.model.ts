@@ -66,6 +66,11 @@ export class User extends Model {
     allowNull: false,
   })
   lastName: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  pass: string;
 }
 
 export const USER_REPOSITORY = 'USER_REPOSITORY';

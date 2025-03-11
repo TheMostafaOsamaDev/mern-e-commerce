@@ -21,8 +21,27 @@ export class BackendSession extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    unique: true,
   })
   secret: string;
+
+  @Column({
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+  })
+  authedAt: Date;
+
+  @Column({
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+  })
+  lastAuth: Date;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  token: string;
 
   // Foreign key to the User model
   @ForeignKey(() => User)

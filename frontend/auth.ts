@@ -23,6 +23,14 @@ export const auth = betterAuth({
         type: "string",
         required: true,
       },
+      pass: {
+        type: "string",
+        required: true,
+      },
     },
+  },
+  hooks: {},
+  advanced: {
+    useSecureCookies: true,
   },
 });

@@ -16,7 +16,7 @@ import {
   signUpSchema,
 } from "@/lib/schemas";
 import { Loader2, LogIn, UserPlus } from "lucide-react";
-import { Form, useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -30,6 +30,7 @@ import { signIn, signUp } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useState } from "react";
 import { betterAuthGlobalErrorHandler } from "@/utils/error-handler";
+import * as bcrypt from "bcryptjs";
 
 export default function AuthDialog({ type }: { type: "sign-in" | "sign-up" }) {
   const isSignUp = type === "sign-up";
@@ -47,11 +48,20 @@ export default function AuthDialog({ type }: { type: "sign-in" | "sign-up" }) {
     setIsSubmitting(true);
 
     if (isSignUp && data.firstName && data.lastName) {
+      let hashedPassword = "";
+      try {
+        const salt = await bcrypt.genSalt(10);
+        hashedPassword = await bcrypt.hash(data.password, salt);
+      } catch (error) {
+        return toast.error("Sorry an error occurred, please try again later");
+      }
+
       await signUp.email({
         email: data.email,
         password: data.password,
         firstName: data.firstName,
         lastName: data.lastName,
+        pass: hashedPassword,
         name: `${data.firstName} ${data.lastName}`,
         fetchOptions: {
           onSuccess: () => {
