@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
+import { auth } from "@/auth";
+import { headers } from "next/headers";
 import React from "react";
-import SearchInput from "./ui/search-input";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
+import Link from "next/link";
 import {
   ChartColumnStacked,
   CircleAlert,
@@ -10,20 +10,9 @@ import {
   ShoppingBasket,
   UserPlus,
 } from "lucide-react";
-import { auth } from "@/auth";
-import { headers } from "next/headers";
-import UserDropdown from "./auth/UserDropdown";
+import UserDropdown from "../auth/UserDropdown";
 
-export default async function Header() {
-  // If dashboard don't show the header
-  const headersList = await headers();
-  const path = headersList.get("x-url") || headersList.get("referer");
-  const url = new URL(path?.toString() || "", "http://localhost:3000");
-  if (url.pathname === "/dashboard") {
-    return null;
-  }
-
-  // Content
+export default async function HeaderContent() {
   let content;
 
   try {
@@ -75,23 +64,5 @@ export default async function Header() {
     );
   }
 
-  return (
-    <header className="container py-2">
-      <div className="flex items-center justify-between gap-4 border-b">
-        <Link href={"/"} className="block w-24 h-14 overflow-hidden ">
-          <Image
-            src={"/images/logo.png"}
-            width={500}
-            height={500}
-            alt="Logo"
-            className="w-full h-full object-cover"
-          />
-        </Link>
-
-        <SearchInput />
-
-        {content}
-      </div>
-    </header>
-  );
+  return content;
 }

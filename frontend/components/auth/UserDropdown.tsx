@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { EllipsisVertical, User } from "lucide-react";
 import Link from "next/link";
 import SignOutButton from "./SignOutButton";
+
 export default function UserDropdown() {
   return (
     <DropdownMenu>
@@ -17,14 +18,22 @@ export default function UserDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem asChild>
-          <Link href={"/profile"}>
-            <User /> Profile
-          </Link>
-        </DropdownMenuItem>
-
-        <SignOutButton />
+        <UserDropdownContent />
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
+
+export const UserDropdownContent = () => {
+  return (
+    <>
+      <DropdownMenuItem asChild>
+        <Link href={"/profile"}>
+          <User /> Profile
+        </Link>
+      </DropdownMenuItem>
+
+      <SignOutButton />
+    </>
+  );
+};
