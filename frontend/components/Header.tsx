@@ -15,6 +15,15 @@ import { headers } from "next/headers";
 import UserDropdown from "./auth/UserDropdown";
 
 export default async function Header() {
+  // If dashboard don't show the header
+  const headersList = await headers();
+  const path = headersList.get("x-url") || headersList.get("referer");
+  const url = new URL(path?.toString() || "", "http://localhost:3000");
+  if (url.pathname === "/dashboard") {
+    return null;
+  }
+
+  // Content
   let content;
 
   try {

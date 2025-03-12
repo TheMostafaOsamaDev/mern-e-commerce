@@ -7,6 +7,11 @@ export async function middleware(request: NextRequest) {
   const { pathname, origin } = request.nextUrl;
 
   if (pathname === "/dashboard") {
+    // Save the path:
+    const headers = new Headers(request.headers);
+    headers.set("x-current-path", request.nextUrl.pathname);
+
+    // Check if the user is an admin
     const session = await axios("/api/auth/get-session", {
       baseURL: origin,
       headers: {
