@@ -3,7 +3,13 @@ import Link from "next/link";
 import React from "react";
 import SearchInput from "./ui/search-input";
 import { Button } from "./ui/button";
-import { CircleAlert, LogIn, ShoppingBasket, UserPlus } from "lucide-react";
+import {
+  ChartColumnStacked,
+  CircleAlert,
+  LogIn,
+  ShoppingBasket,
+  UserPlus,
+} from "lucide-react";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 import UserDropdown from "./auth/UserDropdown";
@@ -36,13 +42,19 @@ export default async function Header() {
         <>
           <UserDropdown />
 
-          {/* TODO: Add dashboard */}
-
-          <Button asChild>
-            <Link href={"/cart"}>
-              <ShoppingBasket /> Cart
-            </Link>
-          </Button>
+          {session.user.isAdmin ? (
+            <Button asChild>
+              <Link href={"/dashboard"}>
+                <ChartColumnStacked /> Dashboard
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild>
+              <Link href={"/cart"}>
+                <ShoppingBasket /> Cart
+              </Link>
+            </Button>
+          )}
         </>
       );
     }
