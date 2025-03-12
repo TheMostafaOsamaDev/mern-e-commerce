@@ -34,50 +34,6 @@ import {
 import { Checkbox } from "../ui/checkbox";
 import AdminOTP from "./AdminOTP";
 
-const signInBackend = async ({
-  email,
-  password,
-  isSignUp,
-}: {
-  email: string;
-  password: string;
-  isSignUp: boolean;
-}) => {
-  try {
-    const res = await axiosBase.post("/auth/sign-in", {
-      email,
-      password,
-    });
-
-    return res.data;
-  } catch (error) {
-    console.log("From signInBackend");
-    console.log(error);
-
-    if (isSignUp) {
-      return await deleteUser({
-        password,
-        callbackURL: "/",
-        fetchOptions: {
-          onSuccess: () => {
-            toast.error("Sorry an error occurred, please try again later");
-          },
-          onError: (ctx) => {
-            console.log("From deleteUser");
-            console.log(ctx);
-          },
-        },
-      });
-    }
-
-    await signOut();
-
-    toast.error("Sorry an error occurred, please try again later");
-
-    return false;
-  }
-};
-
 export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
   const isSignUp = type === "sign-up";
   const schema = isSignUp ? signUpSchema : signInSchema;
@@ -133,14 +89,7 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
           name: `${data.firstName} ${data.lastName}`,
           fetchOptions: {
             onSuccess: async () => {
-              const res = await signInBackend({
-                email: data.email,
-                password: data.password,
-                isSignUp: true,
-              });
-              if (res) {
-                toast.success("Account created successfully!");
-              }
+              toast.success("Account created successfully!");
             },
             onError: betterAuthGlobalErrorHandler,
           },
@@ -152,14 +101,7 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
           password: data.password,
           fetchOptions: {
             onSuccess: async () => {
-              const res = await signInBackend({
-                email: data.email,
-                password: data.password,
-                isSignUp: false,
-              });
-              if (res) {
-                toast.success("Signed in successfully!");
-              }
+              toast.success("Signed in successfully!");
             },
             onError: betterAuthGlobalErrorHandler,
           },

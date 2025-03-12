@@ -2,15 +2,12 @@
 
 import { LogOut } from "lucide-react";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
-import { axiosBase } from "@/lib/api";
 import { toast } from "sonner";
 import { signOut } from "@/actions/auth.actions";
 
 export default function SignOutButton() {
   const handleSignOut = async () => {
     try {
-      await axiosBase.delete("/auth/sign-out");
-
       await signOut();
 
       toast.success("You have been signed out");

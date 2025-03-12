@@ -19,7 +19,6 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  // app.use('/api/auth/*', toNodeHandler(auth));
   app.use(/^\/api\/auth\/.*/, toNodeHandler(auth));
 
   await app.listen(process.env.PORT ?? 8000);
