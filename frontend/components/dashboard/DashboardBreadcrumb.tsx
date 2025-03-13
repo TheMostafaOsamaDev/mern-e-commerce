@@ -25,8 +25,6 @@ export function DashboardBreadcrumb() {
       return path;
     }, "");
 
-  console.log(breadcrumbPaths);
-
   return (
     <Breadcrumb>
       <BreadcrumbList>

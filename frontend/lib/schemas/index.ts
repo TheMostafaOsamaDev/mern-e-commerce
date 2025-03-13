@@ -1,3 +1,4 @@
+import { ProductCategories, SubProductCategories } from "@/lib/product-types";
 import { z } from "zod";
 
 // Sign up schema
@@ -29,4 +30,27 @@ export const signInSchema = z.object({
 export const signInDefaultValues = {
   email: "",
   password: "",
+};
+
+// Adding single product schema
+export const addSingleProductSchema = z.object({
+  title: z.string().min(2).default(""),
+  price: z.number().int().positive().default(0),
+  quantity: z.number().int().positive().default(0),
+  category: z.nativeEnum(ProductCategories),
+  subCategory: z.nativeEnum(SubProductCategories),
+  images: z
+    .array(z.string())
+    .min(3, "You must at least have 3 images")
+    .max(10, "Can't add more than 10 images")
+    .default([]),
+});
+
+export const addSingleProductDefaultValues = {
+  title: "",
+  price: 0,
+  quantity: 0,
+  category: "",
+  subCategory: "",
+  images: [],
 };
