@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { createPool } from "mysql2/promise";
-import { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } from "./config";
+import { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } from "./constants";
 
 export const auth = betterAuth({
   database: createPool({

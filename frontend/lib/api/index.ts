@@ -1,4 +1,4 @@
-import { API_URL } from "@/config";
+import { API_URL } from "@/constants";
 import axios from "axios";
 
 export const signal = new AbortController().signal;

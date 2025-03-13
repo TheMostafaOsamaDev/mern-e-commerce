@@ -2,18 +2,19 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import UserDropdown from "./UserDropdown";
+import { sidebarItems } from "@/constants";
+import SidebatItem from "./SidebarItem";
 
 export function DashboardSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+      <SidebarContent className="p-3">
+        {sidebarItems.map((item, index) => (
+          <SidebatItem key={index} item={item} />
+        ))}
       </SidebarContent>
       <SidebarFooter>
         <UserDropdown />

@@ -7,24 +7,29 @@ export async function middleware(request: NextRequest) {
   const { pathname, origin } = request.nextUrl;
 
   if (pathname === "/dashboard") {
-    // Save the path:
-    const headers = new Headers(request.headers);
-    headers.set("x-current-path", request.nextUrl.pathname);
+    try {
+      // Save the path:
+      const headers = new Headers(request.headers);
+      headers.set("x-current-path", request.nextUrl.pathname);
 
-    // Check if the user is an admin
-    const session = await axios("/api/auth/get-session", {
-      baseURL: origin,
-      headers: {
-        cookie: request.headers.get("cookie") || "",
-      },
-    });
+      // Check if the user is an admin
+      const session = await fetch(`${origin}/api/auth/get-session`, {
+        headers: {
+          cookie: request.headers.get("cookie") || "",
+        },
+        method: "GET",
+        cache: "force-cache",
+      });
 
-    const user: UserType = session.data.user;
+      const user: UserType = (await session.json()).user;
 
-    if (!user.isAdmin) {
-      const url = new URL("/", request.url);
+      if (!user?.isAdmin) {
+        const url = new URL("/", request.url);
 
-      return NextResponse.redirect(url.toString());
+        return NextResponse.redirect(url.toString());
+      }
+    } catch (error) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   } else if (pathname === "/cart") {
     const session = await axios("/api/auth/get-session", {
