@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import SearchInput from "../ui/search-input";
 import HeaderContent from "./HeaderContent";
+import { Skeleton } from "../ui/skeleton";
 
 export default async function Header() {
   return (
@@ -20,7 +21,9 @@ export default async function Header() {
 
         <SearchInput />
 
-        <HeaderContent />
+        <Suspense fallback={<Skeleton className="h-9 w-28" />}>
+          <HeaderContent />
+        </Suspense>
       </div>
     </header>
   );

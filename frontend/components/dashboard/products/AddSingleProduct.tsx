@@ -26,6 +26,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import SelectCategories from "./SelectCategories";
+import ImagesUploader from "./ImagesUploader";
 
 export default function AddSingleProduct() {
   const form = useForm<z.infer<typeof addSingleProductSchema>>({
@@ -104,6 +106,10 @@ export default function AddSingleProduct() {
                 )}
               />
             </div>
+
+            <SelectCategories form={form} />
+
+            <ImagesUploader form={form} />
           </form>
         </FormProvider>
       </DialogContent>

@@ -50,7 +50,7 @@ export const addSingleProductDefaultValues = {
   title: "",
   price: 0,
   quantity: 0,
-  category: "",
-  subCategory: "",
+  category: undefined,
+  subCategory: undefined,
   images: [],
 };
