@@ -9,7 +9,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { User } from './user.model';
+import { User } from './user.entity';
 
 @Table({ tableName: 'account' })
 export class Account extends Model {

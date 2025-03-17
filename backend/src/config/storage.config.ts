@@ -13,7 +13,6 @@ if (!fs.existsSync(uploadDir)) {
 export const productImageStorage = diskStorage({
   destination: uploadDir,
   filename: (req, file, callback) => {
-    console.log(`Hello World`);
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const ext = extname(file.originalname);
     callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);

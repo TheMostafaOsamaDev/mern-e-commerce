@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { userProviders } from './models/user.model';
-import { accountProviders } from './models/account.model';
+import { userProviders } from './entities/user.entity';
+import { accountProviders } from './entities/account.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_SECRET } from 'src/config';
 

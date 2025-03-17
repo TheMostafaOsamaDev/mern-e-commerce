@@ -18,5 +18,12 @@ export class UploaderController {
       storage: productImageStorage,
     }),
   )
-  uploadProductImages(@UploadedFiles() files: Express.Multer.File) {}
+  async uploadProductImages(@UploadedFiles() files: Express.Multer.File[]) {
+    const filenames = files.map((file) => ({ name: file.filename }));
+
+    const productImages =
+      await this.uploadedService.createProductImage(filenames);
+
+    return productImages;
+  }
 }

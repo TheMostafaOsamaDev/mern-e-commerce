@@ -1,5 +1,5 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-import { Image } from 'src/uploader/entities/image.entity';
+import { ProductImage } from 'src/uploader/entities/product-image.entity';
 import { arrayToSnakeCase } from 'src/utils/array-to-snake-case';
 import {
   ProductCategories,
@@ -31,8 +31,14 @@ export class Product extends Model {
   })
   subCategory: SubProductCategories;
 
-  @HasMany(() => Image)
-  images: Image[];
+  @HasMany(() => ProductImage)
+  images: ProductImage[];
 }
 
-// Product.hasMany(Image, { foreignKey: 'productId' });
+export const PRODUCT_REPOSITORY = 'PRODUCT_REPOSITORY';
+export const productProviders = [
+  {
+    provide: PRODUCT_REPOSITORY,
+    useValue: Product,
+  },
+];

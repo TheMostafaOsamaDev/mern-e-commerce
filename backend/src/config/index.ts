@@ -21,3 +21,7 @@ export const DB_TYPE = process.env.DB_TYPE!;
 export const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const ADMIN_OTP = process.env.ADMIN_OTP!;
+
+// Paths
+export const productImagePath = (imagePath: string) =>
+  `/uploads/products/${imagePath}`;
