@@ -2,6 +2,7 @@
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import * as fs from 'fs';
+import { BadRequestException } from '@nestjs/common';
 
 const uploadDir = './uploads/products';
 
@@ -24,6 +25,6 @@ export const imageFileFilter = (req, file, callback) => {
   if (validMimeTypes.includes(file.mimetype)) {
     callback(null, true);
   } else {
-    callback(new Error('Invalid file type'), false);
+    callback(new BadRequestException('Invalid file type'), false);
   }
 };

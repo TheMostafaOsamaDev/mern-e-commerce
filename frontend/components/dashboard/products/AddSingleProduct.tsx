@@ -17,9 +17,7 @@ import { Plus } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
-  Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import SelectCategories from "./SelectCategories";
 import ImagesUploader from "./ImagesUploader";
+import { toast } from "sonner";
 
 export default function AddSingleProduct() {
   const form = useForm<z.infer<typeof addSingleProductSchema>>({
@@ -35,7 +34,18 @@ export default function AddSingleProduct() {
     defaultValues: addSingleProductDefaultValues,
   });
 
-  function onSubmit(data: z.infer<typeof addSingleProductSchema>) {}
+  function onSubmit(data: z.infer<typeof addSingleProductSchema>) {
+    const images = form.getValues("images");
+
+    console.log("Images");
+    console.log(images);
+
+    if (images.length < 3) {
+      return toast.info("At least 3 images are required");
+    } else if (images.length > 5) {
+      return toast.info("At most 5 images are required");
+    }
+  }
 
   return (
     <Dialog>
@@ -44,7 +54,7 @@ export default function AddSingleProduct() {
           <Plus /> Add product
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-4xl">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Are a single product</DialogTitle>
           <DialogDescription>
@@ -74,7 +84,7 @@ export default function AddSingleProduct() {
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor={"price"}>Title</FormLabel>
+                    <FormLabel htmlFor={"price"}>Price</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Ex: 1000"
@@ -90,14 +100,15 @@ export default function AddSingleProduct() {
 
               <FormField
                 control={form.control}
-                name="title"
+                name="quantity"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor={"title"}>Title</FormLabel>
+                    <FormLabel htmlFor={"quantity"}>Quantity</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Product title"
-                        id="title"
+                        id="quantity"
+                        type="number"
+                        placeholder="Ex: 50"
                         {...field}
                       />
                     </FormControl>
@@ -110,6 +121,8 @@ export default function AddSingleProduct() {
             <SelectCategories form={form} />
 
             <ImagesUploader form={form} />
+
+            <Button className="w-full">Add the product</Button>
           </form>
         </FormProvider>
       </DialogContent>

@@ -35,14 +35,22 @@ export const signInDefaultValues = {
 // Adding single product schema
 export const addSingleProductSchema = z.object({
   title: z.string().min(2).default(""),
-  price: z.number().int().positive().default(0),
-  quantity: z.number().int().positive().default(0),
+  quantity: z
+    .string()
+    .refine((val) => !isNaN(Number(val)), "Must be a valid number")
+    .transform((val) => Number(val))
+    .refine((val) => val >= 0, "Quantity must be 0 or greater"),
+  price: z
+    .string()
+    .refine((val) => !isNaN(Number(val)), "Must be a valid number")
+    .transform((val) => Number(val))
+    .refine((val) => val >= 0, "Price must be 0 or greater"),
   category: z.nativeEnum(ProductCategories),
   subCategory: z.nativeEnum(SubProductCategories),
   images: z
     .array(z.string())
     .min(3, "You must at least have 3 images")
-    .max(10, "Can't add more than 10 images")
+    .max(5, "Can't add more than 5 images")
     .default([]),
 });
 
