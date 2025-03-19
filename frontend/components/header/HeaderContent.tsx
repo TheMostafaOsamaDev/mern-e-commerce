@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { headers } from "next/headers";
 import React from "react";
 import { Button } from "../ui/button";
@@ -16,11 +15,9 @@ export default async function HeaderContent() {
   let content;
 
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = false;
 
-    if (!session?.user) {
+    if (!session) {
       content = (
         <>
           <Button asChild>
@@ -40,7 +37,7 @@ export default async function HeaderContent() {
         <>
           <UserDropdown />
 
-          {session.user.isAdmin ? (
+          {false ? (
             <Button asChild>
               <Link href={"/dashboard"}>
                 <ChartColumnStacked /> Dashboard

@@ -1,12 +1,10 @@
 import { AxiosError } from "axios";
-import { ErrorContext } from "better-auth/react";
 
 export const formatAxiosError = (error: AxiosError<any>): any => {
   let finalMessage = "";
   const res =
     error.response?.data?.message || error.response?.data || error.message;
 
-  console.log(`~~~~~~~ ERROR ~~~~~~~`);
   console.log(res);
 
   if (typeof res === "string") {
@@ -19,6 +17,8 @@ export const formatAxiosError = (error: AxiosError<any>): any => {
     finalMessage = res.message;
   } else if (Array.isArray(res.message)) {
     finalMessage = res.message.join(", ");
+  } else if (Array.isArray(res)) {
+    finalMessage = res.join(", ");
   } else if (error.status) {
     finalMessage = `Error occurred with status code: ${error.status}`;
   } else {
@@ -31,11 +31,9 @@ export const formatAxiosError = (error: AxiosError<any>): any => {
 import { toast } from "sonner";
 
 export const tanstackGlobalErrorHandler = (error: AxiosError) => {
-  const axiosError = formatAxiosError(error as AxiosError);
-
-  toast.error(axiosError || "An error occurred");
-};
-
-export const betterAuthGlobalErrorHandler = (ctx: ErrorContext) => {
-  toast.error(ctx.error?.message || "An error occurred");
+  const message =
+    error.status === 404
+      ? "Resource not found"
+      : formatAxiosError(error as AxiosError) || "An error occurred";
+  toast.error(message);
 };

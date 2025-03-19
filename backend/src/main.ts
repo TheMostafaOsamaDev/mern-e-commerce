@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import { toNodeHandler } from 'better-auth/node';
-import { auth } from './better-auth/auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,8 +16,6 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
-
-  app.use(/^\/api\/auth\/.*/, toNodeHandler(auth));
 
   await app.listen(process.env.PORT ?? 8000);
 }

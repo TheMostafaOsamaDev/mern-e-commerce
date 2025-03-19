@@ -1,12 +1,3 @@
-/**
- * # DB
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=mostafa
-DB_PASS=mostafa
-DB_NAME=e_commerce_db
-
- */
 import * as dotenv from 'dotenv';
 
 dotenv.config();

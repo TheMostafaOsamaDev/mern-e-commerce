@@ -18,12 +18,8 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { deleteUser, signIn, signOut, signUp } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
-import { betterAuthGlobalErrorHandler } from "@/utils/error-handler";
-import * as bcrypt from "bcryptjs";
-import { axiosBase } from "@/lib/api";
 import {
   Card,
   CardContent,
@@ -33,13 +29,41 @@ import {
 } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import AdminOTP from "./AdminOTP";
+import { useMutation } from "@tanstack/react-query";
+import {
+  signInMutationFn,
+  signUpMutationFn,
+} from "@/lib/api/tanstack/auth.functions";
+import { signal } from "@/lib/api";
+import { tanstackGlobalErrorHandler } from "@/utils/error-handler";
+import { useRouter } from "next/navigation";
 
 export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
   const isSignUp = type === "sign-up";
   const schema = isSignUp ? signUpSchema : signInSchema;
   const defaultValues = isSignUp ? signUpDefaultValues : signInDefaultValues;
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const otpRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+  // Mutation
+  const signUpMutation = useMutation({
+    mutationKey: ["sign-up"],
+    mutationFn: signUpMutationFn,
+    onSuccess: () => {
+      toast.success("Sign up successful!");
+      router.push("/sign-in");
+    },
+    onError: tanstackGlobalErrorHandler,
+  });
+  const signInMutation = useMutation({
+    mutationKey: ["sign-in"],
+    mutationFn: signInMutationFn,
+    onSuccess: () => {
+      toast.success("Sign in successful!");
+      window.location.reload();
+    },
+    onError: tanstackGlobalErrorHandler,
+  });
+  const isSubmitting = signInMutation.isPending || signUpMutation.isPending;
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -47,71 +71,26 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
   });
 
   async function onSubmit(data: z.infer<typeof schema>) {
-    setIsSubmitting(true);
-
     try {
       if (isSignUp && data.firstName && data.lastName) {
-        const otpValue = otpRef.current?.value;
-        if (data.isAdmin && otpValue) {
-          try {
-            const res = await axiosBase.post("/auth/check-otp", {
-              otp: otpValue,
-            });
-
-            if (!res.data) {
-              throw new Error();
-            }
-          } catch (error) {
-            setIsSubmitting(false);
-            return toast.error("Invalid OTP");
-          }
-        } else if (data.isAdmin && !otpValue) {
-          setIsSubmitting(false);
-          return toast.error("Please enter the OTP");
-        }
-
-        let hashedPassword = "";
-        try {
-          const salt = await bcrypt.genSalt(10);
-          hashedPassword = await bcrypt.hash(data.password, salt);
-        } catch (error) {
-          return toast.error("Sorry an error occurred, please try again later");
-        }
-
-        await signUp.email({
-          email: data.email,
-          password: data.password,
+        const signUpData: SignUpType = {
           firstName: data.firstName,
           lastName: data.lastName,
-          // @ts-ignore
-          isAdmin: data.isAdmin,
-          pass: hashedPassword,
-          name: `${data.firstName} ${data.lastName}`,
-          fetchOptions: {
-            onSuccess: async () => {
-              toast.success("Account created successfully!");
-            },
-            onError: betterAuthGlobalErrorHandler,
-          },
-          callbackURL: "/",
-        });
-      } else {
-        await signIn.email({
           email: data.email,
           password: data.password,
-          fetchOptions: {
-            onSuccess: async () => {
-              toast.success("Signed in successfully!");
-            },
-            onError: betterAuthGlobalErrorHandler,
-          },
-          callbackURL: "/",
-        });
+          isAdmin: data.isAdmin,
+          otp: data.isAdmin ? otpRef.current?.value || "" : "",
+        };
+        signUpMutation.mutate({ data: signUpData, signal });
+      } else {
+        const signInData: SignInType = {
+          email: data.email,
+          password: data.password,
+        };
+        signInMutation.mutate({ data: signInData, signal });
       }
     } catch (error) {
       toast.error("Sorry an error occurred, please try again later");
-    } finally {
-      setIsSubmitting(false);
     }
   }
   return (

@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { userProviders } from './entities/user.entity';
-import { accountProviders } from './entities/account.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_SECRET } from 'src/config';
+import { LocalStrategy } from 'src/strategies/local.strategy';
 
 @Module({
   imports: [
@@ -15,6 +15,6 @@ import { JWT_SECRET } from 'src/config';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, ...userProviders, ...accountProviders],
+  providers: [AuthService, ...userProviders, LocalStrategy],
 })
 export class AuthModule {}

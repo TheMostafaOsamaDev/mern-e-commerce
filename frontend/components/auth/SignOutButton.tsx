@@ -3,13 +3,10 @@
 import { LogOut } from "lucide-react";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import { toast } from "sonner";
-import { signOut } from "@/actions/auth.actions";
 
 export default function SignOutButton() {
   const handleSignOut = async () => {
     try {
-      await signOut();
-
       toast.success("You have been signed out");
 
       window.location.reload();

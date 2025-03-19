@@ -14,14 +14,9 @@ export class User extends Model {
   @Column({
     type: DataType.STRING(36),
     allowNull: false,
+    defaultValue: DataType.UUIDV4,
   })
   id: string;
-
-  @Column({
-    type: DataType.TEXT,
-    allowNull: false,
-  })
-  name: string;
 
   @Column({
     type: DataType.STRING(255),
@@ -29,12 +24,6 @@ export class User extends Model {
     unique: true,
   })
   email: string;
-
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-  })
-  emailVerified: boolean;
 
   @Column({
     type: DataType.TEXT,
@@ -69,8 +58,9 @@ export class User extends Model {
 
   @Column({
     type: DataType.TEXT,
+    allowNull: false,
   })
-  pass: string;
+  password: string;
 }
 
 export const USER_REPOSITORY = 'USER_REPOSITORY';

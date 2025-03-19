@@ -3,8 +3,8 @@ import { z } from "zod";
 
 // Sign up schema
 export const signUpSchema = z.object({
-  firstName: z.string().min(2).default(""),
-  lastName: z.string().min(2).default(""),
+  firstName: z.string().min(2).max(50).default(""),
+  lastName: z.string().min(2).max(50).default(""),
   email: z.string().email().default(""),
   password: z.string().min(8).default(""),
   isAdmin: z.boolean().default(false),
@@ -20,8 +20,8 @@ export const signUpDefaultValues = {
 
 // Sign in schema
 export const signInSchema = z.object({
-  firstName: z.string().min(2).default("").optional(),
-  lastName: z.string().min(2).default("").optional(),
+  firstName: z.string().min(2).max(50).default("").optional(),
+  lastName: z.string().min(2).max(50).default("").optional(),
   email: z.string().email().default(""),
   password: z.string().min(8).default(""),
   isAdmin: z.boolean().default(false),
