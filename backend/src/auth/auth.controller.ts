@@ -1,10 +1,11 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import * as bcrypt from 'bcryptjs';
 import { ADMIN_OTP } from 'src/config';
 import { SignUpDto } from './dto/sign-up.dto';
 import { LocalGuard } from 'src/guards/local.guard';
 import { Request } from 'express';
+import { AuthenticatedGuard } from './guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +30,11 @@ export class AuthController {
   @UseGuards(LocalGuard)
   @Post('/sign-in')
   async signIn(@Req() req: Request) {
+    return req.user;
+  }
+
+  @Get('/me')
+  async me(@Req() req: Request) {
     return req.user;
   }
 }
