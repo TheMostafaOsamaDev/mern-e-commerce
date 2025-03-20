@@ -2,18 +2,33 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { User as UserType, USER_REPOSITORY } from './entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { SignUpDto } from './dto/sign-up.dto';
+import { ADMIN_OTP } from 'src/config';
 
 @Injectable()
 export class AuthService {
   constructor(@Inject(USER_REPOSITORY) private User: typeof UserType) {}
 
   async create(data: SignUpDto) {
+    if (data.isAdmin) {
+      if (!data.otp) {
+        throw new BadRequestException('OTP is required');
+      }
+
+      const isMatch = await bcrypt.compare(data.otp, ADMIN_OTP);
+
+      if (!isMatch) {
+        throw new BadRequestException('Invalid OTP');
+      }
+    }
+
     const salt = bcrypt.genSaltSync(10);
 
     const [user, created] = await this.User.findOrCreate({
       where: { email: data.email },
       defaults: {
-        ...data,
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        isAdmin: data.isAdmin,
         password: bcrypt.hashSync(data.password, salt),
       },
     });

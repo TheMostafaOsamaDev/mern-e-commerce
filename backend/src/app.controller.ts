@@ -1,6 +1,7 @@
 import { Controller, Get, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
+import * as bcrypt from 'bcryptjs';
 
 @Controller()
 export class AppController {
@@ -8,6 +9,14 @@ export class AppController {
 
   @Get()
   async getHello(@Req() req: Request) {
-    return this.appService.getHello();
+    const otp = '123456';
+
+    const salt = bcrypt.genSaltSync(10);
+
+    const hash = await bcrypt.hash(otp, salt);
+
+    console.log(hash);
+
+    return hash;
   }
 }

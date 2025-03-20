@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
+import { Session } from 'src/auth/entities/session.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } from 'src/config';
 import { Product } from 'src/dashboard/products/entities/product.entity';
@@ -16,7 +17,7 @@ export const databaseProviders = [
         password: DB_PASS,
         database: DB_NAME,
       });
-      sequelize.addModels([User, Product, ProductImage]);
+      sequelize.addModels([User, Product, ProductImage, Session]);
       await sequelize.sync();
       return sequelize;
     },

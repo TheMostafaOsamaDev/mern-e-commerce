@@ -45,16 +45,17 @@ export class User extends Model {
   updatedAt: Date;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING(120),
     allowNull: false,
   })
-  firstName: string;
+  name: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   })
-  lastName: string;
+  isAdmin: boolean;
 
   @Column({
     type: DataType.TEXT,
